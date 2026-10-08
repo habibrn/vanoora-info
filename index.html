@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vanoora — Climate intelligence for agriculture</title>
+<meta name="description" content="Vanoora turns climate-and-crop questions into defensible, source-attributed answers — maps, charts, and written interpretation built on peer-reviewed methods.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vn-teal-500:#0B5563;
+    --vn-teal-600:#07343C;
+    --vn-teal-700:#062E35;
+    --vn-amber-500:#D97706;
+    --vn-amber-300:#F0B274;
+    --vn-teal-100:#E8F0EF;
+    --vn-bg:#FAFAF9;
+    --vn-surface:#FFFFFF;
+    --vn-ink:#143230;
+    --vn-ink-muted:#51605E;
+    --vn-ink-faint:#7C8A88;
+    --vn-border:#E7E4DF;
+    --vn-dark-text:#DCE7E5;
+    --vn-dark-muted:#9DB8B6;
+    --vn-live:#5FBFA8;
+    --vn-section-px:clamp(18px,4vw,32px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:'Geist',system-ui,-apple-system,sans-serif;background:var(--vn-bg);color:var(--vn-ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;}
+  img{max-width:100%;}
+  .mono{font-family:'Geist Mono',monospace;}
+  .kicker{display:inline-block;font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--vn-teal-500);margin-bottom:12px;}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 var(--vn-section-px);}
+  .btn-primary{display:inline-flex;align-items:center;gap:9px;text-decoration:none;background:var(--vn-teal-500);color:#fff;padding:14px 24px;border-radius:9px;font-size:16px;font-weight:500;transition:background .2s;}
+  .btn-primary:hover{background:var(--vn-teal-600);}
+  .btn-secondary{display:inline-flex;align-items:center;gap:9px;text-decoration:none;border:1px solid #D6D2CB;color:var(--vn-ink);padding:14px 22px;border-radius:9px;font-size:16px;font-weight:500;transition:background .2s,border-color .2s;}
+  .btn-secondary:hover{background:#fff;border-color:var(--vn-teal-500);}
+
+  /* NAV */
+  header.site{position:sticky;top:0;z-index:50;background:rgba(250,250,249,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--vn-border);}
+  .nav-inner{max-width:1240px;margin:0 auto;padding:0 var(--vn-section-px);height:70px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--vn-ink);}
+  .brand-mark{width:30px;height:30px;border-radius:8px;background:var(--vn-teal-500);display:flex;align-items:center;justify-content:center;position:relative;flex:none;}
+  .brand-mark .ring{width:9px;height:9px;border-radius:50%;border:2px solid var(--vn-bg);}
+  .brand-mark .dot{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--vn-amber-500);top:7px;right:7px;}
+  .brand-name{font-size:20px;font-weight:600;letter-spacing:-0.02em;}
+  .vn-nav{display:flex;align-items:center;gap:28px;}
+  .vn-nav a.navlink{text-decoration:none;font-size:14.5px;font-weight:500;letter-spacing:-0.01em;color:#3D4D4B;}
+  .vn-nav a.navlink:hover{color:var(--vn-teal-500);}
+  .vn-nav a.cta{text-decoration:none;background:var(--vn-teal-500);color:#fff;padding:10px 19px;border-radius:8px;font-size:14px;font-weight:500;letter-spacing:-0.01em;white-space:nowrap;transition:background .2s;}
+  .vn-nav a.cta:hover{background:var(--vn-teal-600);}
+  .vn-ham{display:none;background:none;border:1px solid var(--vn-border);cursor:pointer;padding:9px 11px;border-radius:8px;flex-direction:column;gap:5px;align-items:center;justify-content:center;}
+  .vn-ham span{width:20px;height:2px;background:var(--vn-ink);border-radius:2px;display:block;}
+  #mobileMenu{position:fixed;top:70px;left:0;right:0;z-index:48;background:rgba(250,250,249,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--vn-border);padding:14px 18px;display:none;flex-direction:column;gap:3px;}
+  #mobileMenu.open{display:flex;}
+  #mobileMenu a{text-decoration:none;padding:12px 14px;font-size:16px;font-weight:500;color:var(--vn-ink);border-radius:9px;}
+  #mobileMenu a:hover{background:#F2EFE9;}
+  #mobileMenu a.cta{color:var(--vn-teal-500);}
+
+  /* HERO */
+  .hero{padding:72px var(--vn-section-px) 36px;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center;}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--vn-teal-500);background:var(--vn-teal-100);border:1px solid #D2E2E0;border-radius:100px;padding:5px 12px;margin-bottom:24px;}
+  h1{font-size:clamp(38px,5.2vw,62px);font-weight:600;line-height:1.03;letter-spacing:-0.035em;margin:0 0 24px;text-wrap:balance;}
+  .lead{font-size:clamp(16px,2vw,18.5px);line-height:1.55;color:var(--vn-ink-muted);max-width:520px;margin:0 0 32px;letter-spacing:-0.005em;}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;}
+  .hero-art{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/3;background:var(--vn-teal-600);box-shadow:0 30px 70px -34px rgba(11,85,99,.35);}
+  .hero-art img{width:100%;height:100%;object-fit:cover;display:block;}
+  .hero-art .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,46,53,0) 40%,rgba(6,46,53,.78) 100%);}
+  .hero-art .cap{position:absolute;left:0;right:0;bottom:0;padding:22px 24px;display:flex;flex-wrap:wrap;gap:8px;}
+  .hero-art .cap span{font-family:'Geist Mono',monospace;font-size:11px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:100px;padding:5px 12px;color:var(--vn-dark-text);}
+
+  /* TRUST CHIPS */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;padding:28px var(--vn-section-px) 0;max-width:1240px;margin:0 auto;}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--vn-border);border-radius:100px;padding:8px 15px;font-size:13.5px;font-weight:500;}
+  .chip .dot{width:7px;height:7px;border-radius:50%;}
+
+  /* SECTION HEADERS */
+  section{padding:72px var(--vn-section-px);}
+  .section-head{max-width:620px;margin-bottom:36px;}
+  .section-head h2{font-size:clamp(28px,3.4vw,44px);font-weight:600;letter-spacing:-0.03em;line-height:1.05;margin:0;}
+
+  /* CAPABILITIES */
+  .cap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;}
+  .cap-card{background:#fff;border:1px solid var(--vn-border);border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;}
+  .cap-icon{width:40px;height:40px;border-radius:10px;background:var(--vn-teal-100);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+  .cap-card h3{font-size:19px;font-weight:600;letter-spacing:-0.02em;margin:0 0 8px;}
+  .cap-card p{font-size:14px;line-height:1.55;color:var(--vn-ink-muted);margin:0 0 14px;}
+  .cap-card .count{font-family:'Geist Mono',monospace;font-size:10.5px;color:var(--vn-ink-faint);letter-spacing:.02em;margin-top:auto;}
+
+  /* DATA SOURCES */
+  .data-sect{background:#fff;border-top:1px solid var(--vn-border);border-bottom:1px solid var(--vn-border);}
+  .data-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;}
+  .data-card{background:var(--vn-bg);border:1px solid var(--vn-border);border-radius:14px;padding:24px;}
+  .data-card .label{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.04em;color:var(--vn-amber-500);margin-bottom:10px;}
+  .data-card h3{font-size:18px;font-weight:600;letter-spacing:-0.01em;margin:0 0 8px;}
+  .data-card p{font-size:14px;line-height:1.5;color:var(--vn-ink-muted);margin:0;}
+
+  /* HOW IT WORKS */
+  .how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;}
+  .how-step{border-top:2px solid var(--vn-teal-500);padding-top:20px;}
+  .how-step.last{border-top-color:var(--vn-amber-500);}
+  .how-step .num{font-family:'Geist Mono',monospace;font-size:12px;color:var(--vn-teal-500);margin-bottom:12px;}
+  .how-step.last .num{color:var(--vn-amber-500);}
+  .how-step h3{font-size:18px;font-weight:600;letter-spacing:-0.01em;margin:0 0 8px;}
+  .how-step p{font-size:14.5px;line-height:1.55;color:var(--vn-ink-muted);margin:0;}
+
+  /* FOOTER */
+  footer{background:var(--vn-teal-700);color:var(--vn-dark-muted);}
+  .footer-inner{max-width:1240px;margin:0 auto;padding:64px var(--vn-section-px) 36px;}
+  .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:44px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.1);}
+  .footer-brand p{font-size:14px;line-height:1.55;color:#7C9694;margin:12px 0 0;max-width:280px;}
+  .footer-col{display:flex;flex-direction:column;gap:12px;}
+  .footer-col .label{font-family:'Geist Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#5E7B79;margin-bottom:2px;}
+  .footer-col a,.footer-col span{font-size:14.5px;color:var(--vn-dark-muted);text-decoration:none;}
+  .footer-col a:hover{color:var(--vn-dark-text);}
+  .footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding-top:26px;}
+  .footer-bottom span{font-size:13px;color:#5E7B79;}
+
+  @media(max-width:740px){
+    .vn-nav{display:none!important;}
+    .vn-ham{display:flex!important;}
+    .hero-grid{grid-template-columns:1fr!important;gap:28px!important;}
+    .footer-grid{grid-template-columns:1fr 1fr!important;gap:20px!important;}
+  }
+  @media(max-width:520px){
+    .footer-grid{grid-template-columns:1fr!important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark"><span class="ring"></span><span class="dot"></span></span>
+      <span class="brand-name">Vanoora</span>
+    </a>
+    <nav class="vn-nav">
+      <a class="navlink" href="#capabilities">Capabilities</a>
+      <a class="navlink" href="#data">Data sources</a>
+      <a class="navlink" href="#how-it-works">How it works</a>
+      <a class="cta" href="#contact">Request a demo</a>
+    </nav>
+    <button class="vn-ham" id="hamBtn" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div id="mobileMenu">
+    <a href="#capabilities">Capabilities</a>
+    <a href="#data">Data sources</a>
+    <a href="#how-it-works">How it works</a>
+    <a class="cta" href="#contact">Request a demo →</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="pill">Climate intelligence for agriculture</span>
+        <h1>Ask a climate-and-crop question. Get a defensible answer.</h1>
+        <p class="lead">Vanoora fetches the right satellite and reanalysis data, runs the science, and returns maps, charts, and a written interpretation you can cite, present, and trust.</p>
+        <div class="cta-row">
+          <a href="#contact" class="btn-primary">Request a demo <span>→</span></a>
+          <a href="#capabilities" class="btn-secondary">Explore capabilities</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=85" alt="Aerial view of agricultural fields">
+        <div class="overlay"></div>
+        <div class="cap">
+          <span>ERA5</span>
+          <span>NASA POWER</span>
+          <span>SoilGrids</span>
+          <span>GEE</span>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip"><span class="dot" style="background:var(--vn-teal-500);"></span>Source-attributed figures</span>
+      <span class="chip"><span class="dot" style="background:var(--vn-amber-500);"></span>Baseline-aware analysis</span>
+      <span class="chip"><span class="dot" style="background:var(--vn-live);"></span>Built on peer-reviewed methods</span>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section id="capabilities">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">What you can do</span>
+        <h2>One platform, from raw question to presentation-ready answer</h2>
+      </div>
+      <div class="cap-grid">
+
+        <div class="cap-card">
+          <div class="cap-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0B5563" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5h16v11H8l-4 3z"/><path d="M8 9.5h8M8 12.5h5"/></svg></div>
+          <h3>Ask</h3>
+          <p>One query surface — natural language and structured controls — maps, charts, and narrative.</p>
+          <div class="count">3 sub-capabilities</div>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0B5563" stroke-width="1.6" stroke-linecap="round"><path d="M5 20V4M5 20h15"/><path d="M9 20v-6M13 20V9M17 20v-4"/></svg></div>
+          <h3>Analyses</h3>
+          <p>Anomaly, z-score, trend, SPI, GDD, extremes, and crop suitability — beyond raw data.</p>
+          <div class="count">7 sub-capabilities</div>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0B5563" stroke-width="1.6"><rect x="4" y="5" width="6.5" height="14" rx="1.4"/><rect x="13.5" y="5" width="6.5" height="14" rx="1.4"/></svg></div>
+          <h3>Compare</h3>
+          <p>Region vs region, period vs period, variable vs variable — side by side.</p>
+          <div class="count">3 sub-capabilities</div>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0B5563" stroke-width="1.6"><ellipse cx="12" cy="6" rx="7" ry="2.7"/><path d="M5 6v12c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7V6"/><path d="M5 12c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7"/></svg></div>
+          <h3>Data sources</h3>
+          <p>ERA5, NASA POWER, SoilGrids, and Google Earth Engine — every figure carries its provenance.</p>
+          <div class="count">4 sources</div>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0B5563" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="12" rx="1.6"/><path d="M9 20h6M12 16v4"/></svg></div>
+          <h3>Reports &amp; export</h3>
+          <p>Generate a deck, edit slides inline, export branded PPTX and PDF.</p>
+          <div class="count">3 sub-capabilities</div>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0B5563" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M7 4h10v16l-5-3-5 3z"/></svg></div>
+          <h3>Sessions</h3>
+          <p>Save a named analysis with all its parameters, reload to reproduce or tweak exactly.</p>
+          <div class="count">3 sub-capabilities</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DATA SOURCES -->
+  <section id="data" class="data-sect">
+    <div class="wrap">
+      <span class="kicker">Provenance, not an afterthought</span>
+      <h2 style="font-size:clamp(26px,3.2vw,42px);font-weight:600;letter-spacing:-0.03em;line-height:1.05;margin:0 0 32px;max-width:560px;">Four trusted sources behind every figure</h2>
+      <div class="data-grid">
+        <div class="data-card">
+          <div class="label">REANALYSIS</div>
+          <h3>ERA5</h3>
+          <p>Copernicus reanalysis: temperature, precipitation, wind, radiation and more.</p>
+        </div>
+        <div class="data-card">
+          <div class="label">METEOROLOGY</div>
+          <h3>NASA POWER</h3>
+          <p>Temperature, precipitation, humidity, and wind from NASA's POWER project.</p>
+        </div>
+        <div class="data-card">
+          <div class="label">SOIL</div>
+          <h3>SoilGrids</h3>
+          <p>Soil organic carbon, pH, clay/sand/silt fractions, and bulk density.</p>
+        </div>
+        <div class="data-card">
+          <div class="label">SATELLITE</div>
+          <h3>Google Earth Engine</h3>
+          <p>NDVI, land-surface temperature, and Landsat composites.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How a question becomes an answer</h2>
+      </div>
+      <div class="how-grid">
+        <div class="how-step">
+          <div class="num">01</div>
+          <h3>Ask</h3>
+          <p>Pose a question in plain language or set where / what / how / when explicitly.</p>
+        </div>
+        <div class="how-step">
+          <div class="num">02</div>
+          <h3>Fetch</h3>
+          <p>The right data is pulled from ERA5, NASA POWER, SoilGrids, or Google Earth Engine.</p>
+        </div>
+        <div class="how-step">
+          <div class="num">03</div>
+          <h3>Analyse</h3>
+          <p>Anomaly, trend, SPI, GDD, or suitability runs against your baseline.</p>
+        </div>
+        <div class="how-step last">
+          <div class="num">04</div>
+          <h3>Answer</h3>
+          <p>Maps, charts, and a written interpretation — source-attributed and ready to export.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="brand-mark" style="width:28px;height:28px;"><span class="ring" style="width:8px;height:8px;border-color:#062E35;"></span><span class="dot" style="width:5px;height:5px;top:6px;right:6px;"></span></span>
+          <span style="font-size:19px;font-weight:600;letter-spacing:-0.02em;color:#EDF3F2;">Vanoora</span>
+        </div>
+        <p>Climate intelligence for agriculture. Ask a question, get a defensible, presentation-ready answer.</p>
+      </div>
+      <div class="footer-col">
+        <span class="label">Product</span>
+        <a href="#capabilities">Ask</a>
+        <a href="#capabilities">Compare</a>
+        <a href="#capabilities">Reports</a>
+        <a href="#capabilities">Sessions</a>
+      </div>
+      <div class="footer-col">
+        <span class="label">Contact</span>
+        <span>hello@vanoora.com</span>
+        <span>+1 (000) 000-0000</span>
+        <a href="#contact">Request a demo →</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Vanoora · vanoora.com</span>
+      <span>San Francisco, CA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var hamBtn = document.getElementById('hamBtn');
+    var menu = document.getElementById('mobileMenu');
+    hamBtn.addEventListener('click', function(){
+      var isOpen = menu.classList.toggle('open');
+      hamBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    menu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        menu.classList.remove('open');
+        hamBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
