@@ -109,6 +109,17 @@
   .how-step h3{font-size:18px;font-weight:600;letter-spacing:-0.01em;margin:0 0 8px;}
   .how-step p{font-size:14.5px;line-height:1.55;color:var(--vn-ink-muted);margin:0;}
 
+  /* DEMO FORM */
+  .demo-sect{background:#fff;border-top:1px solid var(--vn-border);}
+  .demo-wrap{max-width:560px;}
+  .demo-form{display:flex;flex-direction:column;gap:16px;margin-top:8px;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field-label{font-size:13.5px;font-weight:500;color:var(--vn-ink);}
+  .field input,.field textarea{width:100%;background:var(--vn-bg);border:1px solid var(--vn-border);border-radius:9px;padding:13px 15px;font-size:15px;color:var(--vn-ink);font-family:inherit;outline:none;resize:vertical;transition:border-color .2s;}
+  .field input:focus,.field textarea:focus{border-color:var(--vn-teal-500);}
+  .demo-submit{border:none;cursor:pointer;align-self:flex-start;}
+  .demo-note{font-size:13.5px;color:var(--vn-ink-muted);margin:4px 0 0;}
+
   /* FOOTER */
   footer{background:var(--vn-teal-700);color:var(--vn-dark-muted);}
   .footer-inner{max-width:1240px;margin:0 auto;padding:64px var(--vn-section-px) 36px;}
@@ -144,7 +155,7 @@
       <a class="navlink" href="#capabilities">Capabilities</a>
       <a class="navlink" href="#data">Data sources</a>
       <a class="navlink" href="#how-it-works">How it works</a>
-      <a class="cta" href="#contact">Request a demo</a>
+      <a class="cta" href="#demo">Request a demo</a>
     </nav>
     <button class="vn-ham" id="hamBtn" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -154,7 +165,7 @@
     <a href="#capabilities">Capabilities</a>
     <a href="#data">Data sources</a>
     <a href="#how-it-works">How it works</a>
-    <a class="cta" href="#contact">Request a demo →</a>
+    <a class="cta" href="#demo">Request a demo →</a>
   </div>
 </header>
 
@@ -168,7 +179,7 @@
         <h1>Ask a climate-and-crop question. Get a defensible answer.</h1>
         <p class="lead">Vanoora fetches the right satellite and reanalysis data, runs the science, and returns maps, charts, and a written interpretation you can cite, present, and trust.</p>
         <div class="cta-row">
-          <a href="#contact" class="btn-primary">Request a demo <span>→</span></a>
+          <a href="#demo" class="btn-primary">Request a demo <span>→</span></a>
           <a href="#capabilities" class="btn-secondary">Explore capabilities</a>
         </div>
       </div>
@@ -306,6 +317,29 @@
     </div>
   </section>
 
+  <!-- REQUEST A DEMO -->
+  <section id="demo" class="demo-sect">
+    <div class="wrap demo-wrap">
+      <div class="section-head">
+        <span class="kicker">Let's talk</span>
+        <h2>Request a demo</h2>
+        <p class="lead" style="margin:12px 0 0;max-width:480px;">Tell us a bit about what you'd like to see and we'll get back to you.</p>
+      </div>
+      <form id="demoForm" class="demo-form" novalidate>
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input type="email" id="demoEmail" name="email" placeholder="you@organisation.org" required>
+        </label>
+        <label class="field">
+          <span class="field-label">What would you like to see?</span>
+          <textarea id="demoDesc" name="description" rows="4" placeholder="Tell us about your use case..." required></textarea>
+        </label>
+        <button type="submit" class="btn-primary demo-submit">Send request <span>→</span></button>
+        <p id="demoNote" class="demo-note" hidden>Opening your email client with these details — if it doesn't open, email hello@vanoora.com directly.</p>
+      </form>
+    </div>
+  </section>
+
 </main>
 
 <footer id="contact">
@@ -328,7 +362,7 @@
       <div class="footer-col">
         <span class="label">Contact</span>
         <span>hello@vanoora.com</span>
-        <a href="#contact">Request a demo →</a>
+        <a href="#demo">Request a demo →</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -351,6 +385,18 @@
         menu.classList.remove('open');
         hamBtn.setAttribute('aria-expanded', 'false');
       });
+    });
+
+    var demoForm = document.getElementById('demoForm');
+    var demoNote = document.getElementById('demoNote');
+    demoForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var email = document.getElementById('demoEmail').value.trim();
+      var desc = document.getElementById('demoDesc').value.trim();
+      var subject = encodeURIComponent('Demo request from ' + email);
+      var body = encodeURIComponent('From: ' + email + '\n\n' + desc);
+      window.location.href = 'mailto:hello@vanoora.com?subject=' + subject + '&body=' + body;
+      demoNote.hidden = false;
     });
   })();
 </script>
