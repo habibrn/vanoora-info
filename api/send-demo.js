@@ -37,6 +37,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('send-demo failed:', err);
-    return res.status(502).json({ error: 'Could not send right now — email hello@vanoora.com directly.' });
+    const detail = process.env.DEBUG_DEMO ? ` (${err.code || err.name}: ${err.message})` : '';
+    return res.status(502).json({ error: 'Could not send right now — email hello@vanoora.com directly.' + detail });
   }
 };
