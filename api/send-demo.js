@@ -13,10 +13,18 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'A valid email and description are required.' });
   }
 
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, DEMO_TO } = process.env;
-  if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
-    console.error('Missing SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASS env vars');
+  const SMTP_HOST = (process.env.SMTP_HOST || '').trim();
+  const SMTP_PORT = (process.env.SMTP_PORT || '').trim();
+  const SMTP_USER = (process.env.SMTP_USER || '').trim();
+  const SMTP_PASS = (process.env.SMTP_PASS || '').trim();
+  const toAddr = (process.env.DEMO_TO || SMTP_USER || '').trim();
+
+  if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS || !toAddr) {
+    console.error('Missing SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASS/DEMO_TO env vars');
     return res.status(500).json({ error: 'Email is not configured yet — email hello@vanoora.com directly.' });
+  }
+  if (process.env.DEBUG_DEMO) {
+    console.log('resolved to:', JSON.stringify(toAddr), 'from:', JSON.stringify(SMTP_USER));
   }
 
   const transporter = nodemailer.createTransport({
@@ -29,7 +37,7 @@ module.exports = async function handler(req, res) {
   try {
     await transporter.sendMail({
       from: `"Vanoora website" <${SMTP_USER}>`,
-      to: DEMO_TO || SMTP_USER,
+      to: toAddr,
       replyTo: email,
       subject: `Demo request from ${email}`,
       text: `From: ${email}\n\n${description}`
